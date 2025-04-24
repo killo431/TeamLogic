@@ -92,16 +92,27 @@ try {
     Write-Host "Error removing Safe Mode boot setting: $_"
 }
 
-# Optional: Wait before reboot (allow uninstall to finish)
-Start-Sleep -Seconds 30
+Start-Sleep -Seconds 3
 
-# Your Safe Mode logic here
-Write-Output "Running custom script in Safe Mode..."
+Write-Host "Running in Safe Mode as Administrator..."
 
-# Reset shell to explorer.exe after the script is done
+# Your logic here
+# e.g., Fix something, copy files, remove malware, whatever
+
+# Reset shell to normal
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
     -Name "Shell" `
     -Value "explorer.exe"
 
-# Optional: Restart into normal mode (if needed)
-Restart-Computer -force
+
+net user Administrator /active:no 
+net user Administrator MySecurePassword123
+
+# (Optional) Disable auto-login again
+Remove-ItemProperty -Path $regPath -Name "AutoAdminLogon" -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path $regPath -Name "DefaultUsername" -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path $regPath -Name "DefaultPassword" -ErrorAction SilentlyContinue
+
+# Restart into normal mode
+Restart-Computer
+

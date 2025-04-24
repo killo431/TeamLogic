@@ -96,8 +96,6 @@ Start-Sleep -Seconds 3
 
 Write-Host "Running in Safe Mode as Administrator..."
 
-# Your logic here
-# e.g., Fix something, copy files, remove malware, whatever
 
 # Reset shell to normal
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `

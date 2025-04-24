@@ -1,69 +1,31 @@
-# Revert Changes - Power Settings
+# Enable Sleep and Hibernate
+powercfg -change standby-timeout-ac 30  # Set to 30 minutes for AC
+powercfg -change standby-timeout-dc 15  # Set to 15 minutes for DC
+powercfg -h on  # Enable hibernation
 
-# --- ENABLE HIBERNATION ---
-powercfg -hibernate on
+# Set Display to stay on indefinitely
+powercfg -change monitor-timeout-ac 0  # Turn off the display timeout (infinite time)
+powercfg -change monitor-timeout-dc 0  # Turn off the display timeout (infinite time)
 
-# --- SYSTEM SLEEP & HARD DRIVE SLEEP: ENABLED ---
-powercfg -change -standby-timeout-ac 15    # Default AC standby timeout
-powercfg -change -standby-timeout-dc 10    # Default DC standby timeout
-powercfg -change -disk-timeout-ac 20       # Default AC disk timeout
-powercfg -change -disk-timeout-dc 20       # Default DC disk timeout
+# Enable Hard Drive Sleep
+powercfg -change disk-timeout-ac 15  # Set to 15 minutes for AC
+powercfg -change disk-timeout-dc 10  # Set to 10 minutes for DC
 
-# --- CPU THROTTLING: Default Power Plan ---
-powercfg -restoredefaultschemes
+# Enable Power Saving for NIC (Network Interface Card)
+# Get the network adapters and loop through them
+$networkAdapters = Get-WmiObject -Class Win32_NetworkAdapter | Where-Object { $_.NetEnabled -eq $true }
 
-# --- SCREEN TIMEOUT (DEFAULT) ---
-powercfg -change -monitor-timeout-ac 15    # Default AC monitor timeout
-powercfg -change -monitor-timeout-dc 10    # Default DC monitor timeout
+foreach ($adapter in $networkAdapters) {
+    $adapterName = $adapter.Name
+    Write-Host "Enabling power saving for NIC: $adapterName"
 
-# --- NIC POWER SETTINGS: RESTORE TO DEFAULT ---
-Get-NetAdapter | ForEach-Object {
-    $nic = $_
-    Write-Output "Restoring NIC settings for: $($nic.Name)"
+    # Enable power management for the NIC
+    $powerManagement = Get-WmiObject -Class Win32_NetworkAdapterConfiguration | Where-Object { $_.Description -eq $adapterName }
     
-    # Disable wake support if it was enabled previously
-    powercfg -devicedisablewake "$($nic.Name)" | Out-Null
-    
-    # Restore default power management settings
-    try {
-        $device = Get-PnpDevice -FriendlyName $nic.Name
-        $instanceId = $device.InstanceId
-        $powerMgmtKey = "HKLM\SYSTEM\CurrentControlSet\Enum\$instanceId\Device Parameters\PowerManagement"
-        if (Test-Path $powerMgmtKey) {
-            Set-ItemProperty -Path $powerMgmtKey -Name "PnPCapabilities" -Value 0 -Force
-            Write-Output "Restored PnPCapabilities to 0 (enabled NIC power down) for $($nic.Name)"
-        }
-    } catch {
-        Write-Output "Could not revert PnPCapabilities for $($nic.Name): $_"
-    }
-
-    # Reset Intel NIC (if any)
-    $intelRegPath = "HKLM\SYSTEM\CurrentControlSet\Control\Class"
-    Get-ChildItem -Path $intelRegPath -Recurse -ErrorAction SilentlyContinue | Where-Object {
-        ($_ | Get-ItemProperty -ErrorAction SilentlyContinue).DriverDesc -like "*Intel*" -and
-        ($_ | Get-ItemProperty -ErrorAction SilentlyContinue).* -ne $null
-    } | ForEach-Object {
-        try {
-            # Reset Intel-specific settings
-            Set-ItemProperty -Path $_.PSPath -Name "EEELinkAdvertisement" -Value "1" -Force -ErrorAction SilentlyContinue # Enable Energy Efficient Ethernet
-            Set-ItemProperty -Path $_.PSPath -Name "SipsEnabled" -Value "1" -Force -ErrorAction SilentlyContinue # Enable System Idle Power Saver
-            Write-Output "Restored Intel energy-saving settings for adapter: $($_.PSChildName)"
-        } catch {
-            Write-Output "Could not reset Intel power settings: $_"
-        }
-    }
-
-    # Reset MSI or Realtek NIC (if any)
-    if ($nic.DriverDesc -like "*MSI*" -or $nic.DriverDesc -like "*Realtek*") {
-        try {
-            # Reset MSI/Realtek energy-saving settings
-            Set-ItemProperty -Path $_.PSPath -Name "EEELinkAdvertisement" -Value "1" -Force -ErrorAction SilentlyContinue
-            Set-ItemProperty -Path $_.PSPath -Name "SipsEnabled" -Value "1" -Force -ErrorAction SilentlyContinue
-            Write-Output "Restored MSI/Realtek energy-saving settings for adapter: $($_.PSChildName)"
-        } catch {
-            Write-Output "Could not reset MSI/Realtek power settings: $_"
-        }
+    # Enable the device to be turned off to save power
+    $powerManagement | ForEach-Object {
+        $_.SetPowerState(1, $null) # Enable power saving mode for the NIC
     }
 }
 
-Write-Output "✅ All changes have been reverted to the default power settings."
+Write-Host "Power settings have been reverted to default."

@@ -77,6 +77,12 @@ ForEach ($RegStartupPath in $RegStartupPaths) {
     Remove-ItemProperty -Path $RegStartupPath -Name "WRSVC"
 }
 
+# Remove Webroot SecureAnywhere folders
+ForEach ($Folder in $Folders) {
+    Write-Host "Removing $Folder"
+    Remove-Item -Path "$Folder" -Force -Recurse -ErrorAction SilentlyContinue
+}
+
 # Remove Safe Mode boot setting
 try {
     Write-Host "Removing Safe Mode boot setting..."

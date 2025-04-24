@@ -26,7 +26,7 @@ Write-Host "Removing Safe Mode boot setting..."
 bcdedit /deletevalue safeboot
 
 # Optional: Pause briefly before restart
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 60
 
 # Restart system
 Write-Host "Restarting system..."

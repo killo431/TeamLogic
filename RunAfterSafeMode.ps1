@@ -93,12 +93,15 @@ try {
 }
 
 # Optional: Wait before reboot (allow uninstall to finish)
-Start-Sleep -Seconds 60
+Start-Sleep -Seconds 30
 
-# Restart system into normal mode
-try {
-    Write-Host "Restarting system..."
-    Restart-Computer -Force
-} catch {
-    Write-Host "Error restarting system: $_"
-}
+# Your Safe Mode logic here
+Write-Output "Running custom script in Safe Mode..."
+
+# Reset shell to explorer.exe after the script is done
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+    -Name "Shell" `
+    -Value "explorer.exe"
+
+# Optional: Restart into normal mode (if needed)
+Restart-Computer -force

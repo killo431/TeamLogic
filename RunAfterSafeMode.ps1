@@ -20,3 +20,14 @@ foreach ($path in $webrootPaths) {
         Write-Host "Webroot executable not found at $path"
     }
 }
+
+# Remove Safe Mode boot
+Write-Host "Removing Safe Mode boot setting..."
+bcdedit /deletevalue safeboot
+
+# Optional: Pause briefly before restart
+Start-Sleep -Seconds 5
+
+# Restart system
+Write-Host "Restarting system..."
+Restart-Computer -Force

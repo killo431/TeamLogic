@@ -1,4 +1,4 @@
-# Stop Webroot SecureAnywhere services
+# Stop Webroot services
 sc.exe stop WRSVC
 sc.exe stop WRCoreService
 sc.exe stop WRSkyClient
@@ -6,28 +6,25 @@ sc.exe stop WRSkyClient
 # Wait briefly to ensure services are stopped
 Start-Sleep -Seconds 5
 
-# Attempt to uninstall from both possible install paths
-$webrootPaths = @(
-    "${Env:ProgramFiles(x86)}\Webroot\WRSA.exe",
-    "${Env:ProgramFiles}\Webroot\WRSA.exe"
-)
+# Define the path to WRSA.exe
+$webrootPath = "C:\Program Files (x86)\Webroot\WRSA.exe"
 
-foreach ($path in $webrootPaths) {
-    if (Test-Path $path) {
-        Write-Host "Attempting to uninstall Webroot from $path"
-        Start-Process -FilePath $path -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
-    } else {
-        Write-Host "Webroot executable not found at $path"
-    }
+if (Test-Path $webrootPath) {
+    Write-Host "Found Webroot at $webrootPath. Attempting silent uninstall..."
+    
+    # Run the uninstall with license key and silent flag
+    Start-Process -FilePath $webrootPath -ArgumentList "/autouninstall=EAD3-KSYA-B887-2BCB-4D18 /silent" -Wait
+} else {
+    Write-Host "Webroot executable not found at $webrootPath"
 }
 
-# Remove Safe Mode boot
+# Remove Safe Mode boot setting
 Write-Host "Removing Safe Mode boot setting..."
 bcdedit /deletevalue safeboot
 
-# Optional: Pause briefly before restart
+# Optional: Wait before reboot (e.g., allow uninstall to complete fully)
 Start-Sleep -Seconds 60
 
-# Restart system
+# Reboot system into normal mode
 Write-Host "Restarting system..."
 Restart-Computer -Force

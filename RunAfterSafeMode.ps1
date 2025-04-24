@@ -113,6 +113,9 @@ Remove-ItemProperty -Path $regPath -Name "AutoAdminLogon" -ErrorAction SilentlyC
 Remove-ItemProperty -Path $regPath -Name "DefaultUsername" -ErrorAction SilentlyContinue
 Remove-ItemProperty -Path $regPath -Name "DefaultPassword" -ErrorAction SilentlyContinue
 
+
+Start-Sleep -Seconds 15
+
 # Restart into normal mode
 Restart-Computer
 

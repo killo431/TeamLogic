@@ -103,6 +103,13 @@
         Write-Progress "Office 365 optimization completed successfully."
     }
 
+
+
+
+    #===============================================================================================================#
+    ##############################################Reset-WindowsKeepFiles####################################################
+
+
     function Reset-WindowsKeepFiles {
         if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
             Write-Warning "This script requires administrative privileges. Attempting to elevate..."

@@ -1,0 +1,139 @@
+{
+  "team_members": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@techcorp.com",
+      "phone": "555-123-4567",
+      "title": "Senior Software Engineer",
+      "department": "Engineering",
+      "projects": ["Website Redesign", "API Development"],
+      "skills": ["Python", "JavaScript", "React", "Node.js"]
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@techcorp.com",
+      "phone": "555-234-5678", 
+      "title": "Product Manager",
+      "department": "Product",
+      "projects": ["Website Redesign", "Mobile App"],
+      "skills": ["Product Strategy", "User Research", "Agile"]
+    },
+    {
+      "name": "Bob Wilson",
+      "email": "bob.wilson@techcorp.com",
+      "title": "UI/UX Designer",
+      "department": "Design",
+      "projects": ["Website Redesign", "Mobile App", "Design System"],
+      "skills": ["Figma", "Adobe Creative Suite", "User Experience"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Website Redesign",
+      "description": "Complete redesign of company website using modern technologies and improved user experience",
+      "status": "In Progress",
+      "deadline": "2024-03-15",
+      "assignees": ["John Doe", "Jane Smith", "Bob Wilson"],
+      "technologies": ["React", "Node.js", "MongoDB", "AWS"],
+      "priority": "High"
+    },
+    {
+      "name": "API Development",
+      "description": "Development of RESTful API for mobile and web applications",
+      "status": "Planning",
+      "deadline": "2024-04-30",
+      "assignees": ["John Doe"],
+      "technologies": ["Python", "FastAPI", "PostgreSQL", "Docker"],
+      "priority": "Medium"
+    },
+    {
+      "name": "Mobile App",
+      "description": "Native mobile application for iOS and Android platforms",
+      "status": "Requirements Gathering",
+      "deadline": "2024-06-30",
+      "assignees": ["Jane Smith", "Bob Wilson"],
+      "technologies": ["React Native", "Firebase", "Redux"],
+      "priority": "Medium"
+    },
+    {
+      "name": "Design System",
+      "description": "Comprehensive design system with reusable components and style guidelines",
+      "status": "Active",
+      "deadline": "2024-02-28",
+      "assignees": ["Bob Wilson"],
+      "technologies": ["Figma", "Storybook", "CSS"],
+      "priority": "High"
+    }
+  ],
+  "organization": {
+    "name": "TechCorp Solutions",
+    "address": "123 Tech Street, Silicon Valley, CA 94000",
+    "website": "https://www.techcorp.com",
+    "industry": "Software Development",
+    "size": "50-100 employees",
+    "founded": "2015"
+  },
+  "meetings": [
+    {
+      "title": "Weekly Standup",
+      "description": "Weekly team standup meeting to discuss progress and blockers",
+      "participants": ["John Doe", "Jane Smith", "Bob Wilson"],
+      "date": "2024-01-15",
+      "duration": "30 minutes",
+      "type": "recurring"
+    },
+    {
+      "title": "Website Redesign Kickoff",
+      "description": "Project kickoff meeting for website redesign initiative",
+      "participants": ["John Doe", "Jane Smith", "Bob Wilson"],
+      "date": "2024-01-08",
+      "duration": "90 minutes",
+      "type": "project"
+    }
+  ],
+  "documents": [
+    {
+      "title": "Technical Requirements Document",
+      "content": "This document outlines the technical requirements for the website redesign project. The new website should be built using React for the frontend and Node.js for the backend. It should support modern web standards and be optimized for performance.",
+      "author": "John Doe",
+      "created_date": "2024-01-05",
+      "type": "technical"
+    },
+    {
+      "title": "User Research Report", 
+      "content": "Based on user interviews and surveys, we found that users want a faster, more intuitive interface. Key findings include: 1) Current navigation is confusing, 2) Page load times are too slow, 3) Mobile experience needs improvement.",
+      "author": "Jane Smith",
+      "created_date": "2024-01-10",
+      "type": "research"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Set up development environment",
+      "description": "Configure development environment with React, Node.js, and necessary tools",
+      "assignee": "John Doe",
+      "priority": "High",
+      "due_date": "2024-01-20",
+      "status": "In Progress",
+      "project": "Website Redesign"
+    },
+    {
+      "title": "Create wireframes",
+      "description": "Design wireframes for all key pages of the new website",
+      "assignee": "Bob Wilson", 
+      "priority": "High",
+      "due_date": "2024-01-25",
+      "status": "Todo",
+      "project": "Website Redesign"
+    },
+    {
+      "title": "Conduct user interviews",
+      "description": "Interview 10 users to understand their needs and pain points",
+      "assignee": "Jane Smith",
+      "priority": "Medium",
+      "due_date": "2024-01-30",
+      "status": "Completed",
+      "project": "Website Redesign"
+    }
+  ]
+}
